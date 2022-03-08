@@ -1,8 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { CartItemStateContext } from "../../context/CartItemContext";
 
 import ShoppingCartItem from "../ShoppingCartItem";
-import Button from "../Button";
 
 function getCartTotal(cart) {
   return cart.reduce((accum, item) => {
@@ -10,7 +9,10 @@ function getCartTotal(cart) {
   }, 0);
 }
 
-function Cart({ cartItems, handleRemove, handleChange, ...props }) {
+function OverviewSidebar({ handleChange, ...props }) {
+  const { cartItems, handleRemove } = useContext(CartItemStateContext);
+  // const dispatch = useContext(CartItemDispatchContext);
+  console.log(cartItems);
   return (
     <aside {...props}>
       <div className="row flex-column">
@@ -49,11 +51,7 @@ function Cart({ cartItems, handleRemove, handleChange, ...props }) {
               </div>
               <hr />
             </div>
-            <div className="col">
-              <Link to="/checkout">
-                <Button disabled={cartItems.length < 1}>Checkout</Button>
-              </Link>
-            </div>
+            <div className="col" />
           </div>
         </div>
       </div>
@@ -61,4 +59,4 @@ function Cart({ cartItems, handleRemove, handleChange, ...props }) {
   );
 }
 
-export default Cart;
+export default OverviewSidebar;
