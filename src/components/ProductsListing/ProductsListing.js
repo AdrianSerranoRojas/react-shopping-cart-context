@@ -14,6 +14,7 @@ function ProductsListing({
     <section className="row" {...props}>
       {products.map((product) => (
         <ItemCard
+          products={products}
           key={product.id}
           id={product.id}
           img={product.img}

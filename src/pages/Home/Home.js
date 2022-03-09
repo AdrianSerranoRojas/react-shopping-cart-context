@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { CartItemStateContext } from "../../context/CartItemContext";
+import React from "react";
+// import { CartItemStateContext } from "../../context/CartItemContext";
 
 import ProductsListing from "../../components/ProductsListing";
 import Cart from "../../components/Cart";
@@ -17,7 +17,7 @@ function Home({
   handleRemove,
   handleChange,
 }) {
-  const { cartItems } = useContext(CartItemStateContext);
+  // const { cartItems } = useContext(CartItemStateContext);
   return (
     <div className="row">
       <div className="col col-8">
@@ -60,7 +60,7 @@ function Home({
       </div>
       <Cart
         className="col col-4"
-        cartItems={cartItems}
+        // cartItems={cartItems}
         handleRemove={handleRemove}
         handleChange={handleChange}
       />

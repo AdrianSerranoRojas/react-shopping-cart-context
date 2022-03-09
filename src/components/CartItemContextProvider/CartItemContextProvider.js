@@ -5,15 +5,12 @@ import {
   CartItemDispatchContext,
 } from "../../context/CartItemContext";
 
+import loadLocalStorageItems from "../../utils/loadLocalStorageItems";
+
+const CART_ITEMS_LOCAL_STORAGE_KEY = "react-sc-state-cart-items";
+
 export const cartItemInitialState = {
-  id: "id",
-  title: "title",
-  img: "img",
-  price: "price",
-  unitsInStock: "unitsInStock",
-  createdAt: "createdAt",
-  updatedAt: "updatedAt",
-  quantity: "quantity + 1",
+  cartItems: loadLocalStorageItems(CART_ITEMS_LOCAL_STORAGE_KEY, []),
 };
 
 export function cartItemReducer(state, action) {
@@ -24,6 +21,30 @@ export function cartItemReducer(state, action) {
         cartItem: state.cartItems.filter(
           (item) => item.id !== action.payload.productId,
         ),
+      };
+    }
+    case "handleAddToCart": {
+      console.log("adios")
+      const foundProduct = action.payload.products.find(
+        (item) => item.id === action.payload.productId,
+      );
+      const updatedProduct = {
+        id: foundProduct.id,
+        title: foundProduct.title,
+        img: foundProduct.img,
+        price: foundProduct.price,
+        unitsInStock: foundProduct.unitsInStock,
+        createdAt: foundProduct.createdAt,
+        updatedAt: foundProduct.updatedAt,
+        quantity: foundProduct.quantity + 1,
+      };
+      console.log(action.payload.products);
+      console.log(state.cartItems);
+      console.log(updatedProduct);
+      console.log(state);
+      return {
+        ...state,
+        cartItems: [...state.cartItems , updatedProduct],
       };
     }
     default:

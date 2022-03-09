@@ -1,14 +1,10 @@
 import { createContext } from "react";
+import loadLocalStorageItems from "../utils/loadLocalStorageItems";
 
-export const CartItemStateContext = createContext({
-  id: "id",
-  title: "title",
-  img: "img",
-  price: "price",
-  unitsInStock: "unitsInStock",
-  createdAt: "createdAt",
-  updatedAt: "updatedAt",
-  quantity: "quantity + 1",
-});
+const CART_ITEMS_LOCAL_STORAGE_KEY = "react-sc-state-cart-items";
+
+export const CartItemStateContext = createContext(
+  loadLocalStorageItems(CART_ITEMS_LOCAL_STORAGE_KEY, []),
+);
 
 export const CartItemDispatchContext = createContext(() => {});

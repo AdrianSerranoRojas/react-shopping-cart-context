@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import ShoppingCartItem from "../ShoppingCartItem";
 import Button from "../Button";
+import { CartItemStateContext } from "../../context/CartItemContext";
 
 function getCartTotal(cart) {
   return cart.reduce((accum, item) => {
@@ -10,7 +11,10 @@ function getCartTotal(cart) {
   }, 0);
 }
 
-function Cart({ cartItems, handleRemove, handleChange, ...props }) {
+function Cart({ handleRemove, handleChange, ...props }) {
+  const { cartItems } = useContext(CartItemStateContext);
+
+  console.log(cartItems);
   return (
     <aside {...props}>
       <div className="row flex-column">
