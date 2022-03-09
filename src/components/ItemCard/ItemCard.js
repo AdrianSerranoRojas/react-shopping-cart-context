@@ -7,11 +7,6 @@ import { ThumbDown, ThumbUp } from "../SVGIcons";
 
 import "./ItemCard.scss";
 
-// import {
-//   // CartItemStateContext,
-//   CartItemDispatchContext,
-// } from "../../context/CartItemContext";
-
 function Divider() {
   return <hr className="ItemCard__divider" />;
 }
@@ -42,11 +37,8 @@ function ItemCard({
   handleDownVote,
   handleUpVote,
   handleSetFavorite,
-  // products,
   handleAddToCart,
 }) {
-  // const dispatch = useContext(CartItemDispatchContext);
-
   function onDownVote() {
     handleDownVote(id);
   }
@@ -57,15 +49,6 @@ function ItemCard({
     handleSetFavorite(id);
   }
 
-  // function handleAddToCart(productId) {
-  //   dispatch({
-  //     type: "handleAddToCart",
-  //     payload: {
-  //       productId: productId,
-  //       products: products,
-  //     },
-  //   });
-  // }
   function onAddToCart() {
     handleAddToCart(id);
   }

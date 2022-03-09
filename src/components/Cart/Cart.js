@@ -13,7 +13,6 @@ function getCartTotal(cart) {
 
 function Cart({ handleRemove, handleChange, ...props }) {
   const { cartItems } = useContext(CartItemStateContext);
-
   console.log(cartItems);
   return (
     <aside {...props}>

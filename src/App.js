@@ -9,7 +9,6 @@ import * as api from "./api";
 
 import useLocalStorage from "./hooks/useLocalStorage";
 import loadLocalStorageItems from "./utils/loadLocalStorageItems";
-import CartItemContextProvider from "./components/CartItemContextProvider/CartItemContextProvider";
 
 import {
   CartItemStateContext,
@@ -42,8 +41,6 @@ function App() {
   );
   const { cartItems } = useContext(CartItemStateContext);
   const dispatch = useContext(CartItemDispatchContext);
-
-  console.log(cartItems);
 
   useLocalStorage(products, PRODUCTS_LOCAL_STORAGE_KEY);
   useLocalStorage(cartItems, CART_ITEMS_LOCAL_STORAGE_KEY);
@@ -113,13 +110,12 @@ function App() {
   //   setCartItems(updatedCartItems);
   // }
   function handleAddToCart(productId) {
-    console.log("hola")
     dispatch({
       type: "handleAddToCart",
       payload: {
         productId: productId,
         products: products,
-      },
+      }
     });
   }
 
@@ -202,31 +198,29 @@ function App() {
 
   return (
     <BrowserRouter>
-      <CartItemContextProvider>
-        <Switch>
-          <Route path="/new-product">
-            <NewProduct saveNewProduct={saveNewProduct} />
-          </Route>
-          <Route path="/" exact>
-            <Home
-              fullWidth
-              products={products}
-              isLoading={isLoading}
-              hasError={hasError}
-              loadingError={loadingError}
-              handleDownVote={handleDownVote}
-              handleUpVote={handleUpVote}
-              handleSetFavorite={handleSetFavorite}
-              handleAddToCart={handleAddToCart}
-              handleRemove={handleRemove}
-              // handleChange={handleChange}
-            />
-          </Route>
-          <Route path="/Checkout">
-            <CheckoutPage />
-          </Route>
-        </Switch>
-      </CartItemContextProvider>
+      <Switch>
+        <Route path="/new-product">
+          <NewProduct saveNewProduct={saveNewProduct} />
+        </Route>
+        <Route path="/" exact>
+          <Home
+            fullWidth
+            products={products}
+            isLoading={isLoading}
+            hasError={hasError}
+            loadingError={loadingError}
+            handleDownVote={handleDownVote}
+            handleUpVote={handleUpVote}
+            handleSetFavorite={handleSetFavorite}
+            handleAddToCart={handleAddToCart}
+            handleRemove={handleRemove}
+            // handleChange={handleChange}
+          />
+        </Route>
+        <Route path="/Checkout">
+          <CheckoutPage />
+        </Route>
+      </Switch>
     </BrowserRouter>
   );
 }

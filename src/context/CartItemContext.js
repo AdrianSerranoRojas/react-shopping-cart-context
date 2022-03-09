@@ -7,4 +7,6 @@ export const CartItemStateContext = createContext(
   loadLocalStorageItems(CART_ITEMS_LOCAL_STORAGE_KEY, []),
 );
 
-export const CartItemDispatchContext = createContext(() => {});
+export const CartItemDispatchContext = createContext(() => {
+
+});

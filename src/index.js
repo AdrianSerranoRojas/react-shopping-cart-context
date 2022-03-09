@@ -6,9 +6,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import CartItemContextProvider from "./components/CartItemContextProvider/CartItemContextProvider";
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <CartItemContextProvider>
+      <App />
+    </CartItemContextProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 );

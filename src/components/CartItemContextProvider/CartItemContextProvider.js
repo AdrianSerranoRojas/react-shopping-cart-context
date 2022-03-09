@@ -16,18 +16,38 @@ export const cartItemInitialState = {
 export function cartItemReducer(state, action) {
   switch (action.type) {
     case "handleRemove": {
+      const updatedCart = state.cartItems.filter(
+        (item) => item.id !== action.payload.productId,
+      );
       return {
         ...state,
-        cartItem: state.cartItems.filter(
-          (item) => item.id !== action.payload.productId,
-        ),
+        cartItems: updatedCart,
       };
     }
     case "handleAddToCart": {
-      console.log("adios")
-      const foundProduct = action.payload.products.find(
-        (item) => item.id === action.payload.productId,
-      );
+      const { cartItems } = state;
+      const { products, productId } = action.payload;
+
+      const prevCartItem = cartItems.find((item) => item.id === productId);
+      const foundProduct = products.find((item) => item.id === productId);
+      if (prevCartItem) {
+        const updatedCartItems = cartItems.map((item) => {
+          if (item.id !== productId) {
+            return { ...item };
+          }
+          // if (item.quantity >= item.unitsInStock) {
+          //   return item;
+          // }
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+        });
+        return {
+          ...state,
+          cartItems: updatedCartItems,
+        };
+      }
       const updatedProduct = {
         id: foundProduct.id,
         title: foundProduct.title,
@@ -38,13 +58,9 @@ export function cartItemReducer(state, action) {
         updatedAt: foundProduct.updatedAt,
         quantity: foundProduct.quantity + 1,
       };
-      console.log(action.payload.products);
-      console.log(state.cartItems);
-      console.log(updatedProduct);
-      console.log(state);
       return {
         ...state,
-        cartItems: [...state.cartItems , updatedProduct],
+        cartItems: [...cartItems, updatedProduct],
       };
     }
     default:
