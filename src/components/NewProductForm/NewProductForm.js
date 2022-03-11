@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { useFormik } from "formik";
@@ -7,6 +7,7 @@ import Input from "../Input";
 import Button from "../Button";
 
 import productSchema from "./product-schema";
+import { ProductsContext } from "../../context/ProductsContext";
 
 function addProductDetails(product) {
   return {
@@ -33,8 +34,9 @@ function addProductDetails(product) {
   };
 }
 
-function NewProductForm({ saveNewProduct }) {
+function NewProductForm() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const { saveNewProduct } = useContext(ProductsContext);
 
   const formik = useFormik({
     initialValues: {
@@ -53,7 +55,6 @@ function NewProductForm({ saveNewProduct }) {
       const newProduct = addProductDetails(values);
       saveNewProduct(newProduct);
       setSubmitting(true);
-
       setTimeout(() => {
         setHasSubmitted(true);
       }, 500);

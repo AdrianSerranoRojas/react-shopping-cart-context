@@ -1,32 +1,23 @@
 import React from "react";
+import { useContext } from "react";
 
+import { ProductsContext } from "../../context/ProductsContext";
 import ItemCard from "../ItemCard";
 
-function ProductsListing({
-  products,
-  handleDownVote,
-  handleUpVote,
-  handleSetFavorite,
-  handleAddToCart,
-  ...props
-}) {
+function ProductsListing() {
+  const { products } = useContext(ProductsContext);
   return (
-    <section className="row" {...props}>
+    <section className="row">
       {products.map((product) => (
         <ItemCard
-          products={products}
           key={product.id}
           id={product.id}
           img={product.img}
           title={product.title}
           shortDescription={product.shortDescription}
           upVotes={product.votes.upVotes}
-          handleUpVote={handleUpVote}
           downVotes={product.votes.downVotes}
-          handleDownVote={handleDownVote}
           isFavorite={product.isFavorite}
-          handleSetFavorite={handleSetFavorite}
-          handleAddToCart={handleAddToCart}
         />
       ))}
     </section>

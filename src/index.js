@@ -7,12 +7,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 import CartItemContextProvider from "./components/CartItemContextProvider/CartItemContextProvider";
+import { ProductsProvider } from "./components/ProductsContextProvider/ProductsContextProvider";
+import CheckoutsContextProvider from "./components/CheckoutsContextProvider/CheckoutsContextProvider";
 
 ReactDOM.render(
   <React.StrictMode>
-    <CartItemContextProvider>
-      <App />
-    </CartItemContextProvider>
+    <ProductsProvider>
+      <CartItemContextProvider>
+        <CheckoutsContextProvider>
+          <App />
+        </CheckoutsContextProvider>
+      </CartItemContextProvider>
+    </ProductsProvider>
   </React.StrictMode>,
   document.getElementById("root"),
 );

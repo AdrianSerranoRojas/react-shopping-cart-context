@@ -8,42 +8,24 @@ import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 import * as api from "./api";
 
 import useLocalStorage from "./hooks/useLocalStorage";
-import loadLocalStorageItems from "./utils/loadLocalStorageItems";
 
-import {
-  CartItemStateContext,
-  CartItemDispatchContext,
-} from "./context/CartItemContext";
-
-// function buildNewCartItem(cartItem) {
-//   if (cartItem.quantity >= cartItem.unitsInStock) {
-//     return cartItem;
-//   }
-
-//   return {
-//     id: cartItem.id,
-//     title: cartItem.title,
-//     img: cartItem.img,
-//     price: cartItem.price,
-//     unitsInStock: cartItem.unitsInStock,
-//     createdAt: cartItem.createdAt,
-//     updatedAt: cartItem.updatedAt,
-//     quantity: cartItem.quantity + 1,
-//   };
-// }
+import { CartItemStateContext } from "./context/CartItemContext";
+import { ProductsContext } from "./context/ProductsContext";
+import PersonalDetailsForm from "./components/PersonalDetailsForm";
+import BillingAddressForm from "./components/BillingAddressForm";
+import PaymentDetailsForm from "./components/PaymentDetailsForm";
 
 const PRODUCTS_LOCAL_STORAGE_KEY = "react-sc-state-products";
 const CART_ITEMS_LOCAL_STORAGE_KEY = "react-sc-state-cart-items";
+// const CHECKOUTS_LOCAL_STORAGE_KEY = "react-sc-state-checkouts";
 
 function App() {
-  const [products, setProducts] = useState(() =>
-    loadLocalStorageItems(PRODUCTS_LOCAL_STORAGE_KEY, []),
-  );
+  const { products, setProducts } = useContext(ProductsContext);
   const { cartItems } = useContext(CartItemStateContext);
-  const dispatch = useContext(CartItemDispatchContext);
 
   useLocalStorage(products, PRODUCTS_LOCAL_STORAGE_KEY);
   useLocalStorage(cartItems, CART_ITEMS_LOCAL_STORAGE_KEY);
+  // useLocalStorage(checkouts, CHECKOUTS_LOCAL_STORAGE_KEY);
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -67,158 +49,34 @@ function App() {
     }
   }, []);
 
-  // function handleAddToCart(productId) {
-  //   const prevCartItem = cartItems.find((item) => item.id === productId);
-  //   const foundProduct = products.find((product) => product.id === productId);
-
-  //   if (prevCartItem) {
-  //     const updatedCartItems = cartItems.map((item) => {
-  //       if (item.id !== productId) {
-  //         return item;
-  //       }
-
-  //       if (item.quantity >= item.unitsInStock) {
-  //         return item;
-  //       }
-
-  //       return {
-  //         ...item,
-  //         quantity: item.quantity + 1,
-  //       };
-  //     });
-
-  //     setCartItems(updatedCartItems);
-  //     return;
-  //   }
-
-  //   const updatedProduct = buildNewCartItem(foundProduct);
-  //   setCartItems((prevState) => [...prevState, updatedProduct]);
-  // }
-
-  // function handleChange(event, productId) {
-  //   const updatedCartItems = cartItems.map((item) => {
-  //     if (item.id === productId && item.quantity <= item.unitsInStock) {
-  //       return {
-  //         ...item,
-  //         quantity: Number(event.target.value),
-  //       };
-  //     }
-
-  //     return item;
-  //   });
-
-  //   setCartItems(updatedCartItems);
-  // }
-  function handleAddToCart(productId) {
-    dispatch({
-      type: "handleAddToCart",
-      payload: {
-        productId: productId,
-        products: products,
-      }
-    });
-  }
-
-  function handleRemove(productId) {
-    dispatch({
-      type: "handleRemove",
-      payload: {
-        productId: productId,
-      },
-    });
-  }
-
-  function handleDownVote(productId) {
-    const updatedProducts = products.map((product) => {
-      if (
-        product.id === productId &&
-        product.votes.downVotes.currentValue <
-          product.votes.downVotes.lowerLimit
-      ) {
-        return {
-          ...product,
-          votes: {
-            ...product.votes,
-            downVotes: {
-              ...product.votes.downVotes,
-              currentValue: product.votes.downVotes.currentValue + 1,
-            },
-          },
-        };
-      }
-
-      return product;
-    });
-
-    setProducts(updatedProducts);
-  }
-
-  function handleUpVote(productId) {
-    const updatedProducts = products.map((product) => {
-      if (
-        product.id === productId &&
-        product.votes.upVotes.currentValue < product.votes.upVotes.upperLimit
-      ) {
-        return {
-          ...product,
-          votes: {
-            ...product.votes,
-            upVotes: {
-              ...product.votes.upVotes,
-              currentValue: product.votes.upVotes.currentValue + 1,
-            },
-          },
-        };
-      }
-
-      return product;
-    });
-
-    setProducts(updatedProducts);
-  }
-
-  function handleSetFavorite(productId) {
-    const updatedProducts = products.map((product) => {
-      if (product.id === productId) {
-        return {
-          ...product,
-          isFavorite: !product.isFavorite,
-        };
-      }
-
-      return product;
-    });
-
-    setProducts(updatedProducts);
-  }
-
-  function saveNewProduct(newProduct) {
-    setProducts((prevState) => [newProduct, ...prevState]);
-  }
-
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/new-product">
-          <NewProduct saveNewProduct={saveNewProduct} />
+          <NewProduct />
         </Route>
         <Route path="/" exact>
           <Home
             fullWidth
-            products={products}
             isLoading={isLoading}
             hasError={hasError}
             loadingError={loadingError}
-            handleDownVote={handleDownVote}
-            handleUpVote={handleUpVote}
-            handleSetFavorite={handleSetFavorite}
-            handleAddToCart={handleAddToCart}
-            handleRemove={handleRemove}
-            // handleChange={handleChange}
           />
         </Route>
-        <Route path="/Checkout">
-          <CheckoutPage />
+        <Route path="/Checkout/step-1">
+          <CheckoutPage>
+            <PersonalDetailsForm />
+          </CheckoutPage>
+        </Route>
+        <Route path="/Checkout/step-2">
+          <CheckoutPage>
+            <BillingAddressForm />
+          </CheckoutPage>
+        </Route>
+        <Route path="/Checkout/step-3">
+          <CheckoutPage>
+            <PaymentDetailsForm />
+          </CheckoutPage>
         </Route>
       </Switch>
     </BrowserRouter>

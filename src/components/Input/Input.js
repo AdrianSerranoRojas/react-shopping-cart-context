@@ -17,8 +17,11 @@ function Input({
       <label htmlFor={id}>{label}</label>
       <input
         className={
+          // eslint-disable-next-line no-nested-ternary
           hasErrorMessage && errorMessage
             ? "form-control is-invalid"
+            : hasErrorMessage
+            ? "form-control is-valid"
             : "form-control"
         }
         id={id}

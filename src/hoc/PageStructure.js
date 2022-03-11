@@ -1,8 +1,6 @@
 import React from "react";
 
 import Main from "../components/Main";
-import OverviewSidebar from "../components/OverviewSidebar/OverviewSidebar";
-import PageFooter from "../components/PageFooter";
 import PageHeader from "../components/PageHeader/PageHeader";
 
 function getDisplayName(WrappedComponent) {
@@ -22,8 +20,6 @@ function PageStructure(WrappedComponent) {
         <Main className={props.fullWidth ? "container-fluid" : "container"}>
           <WrappedComponent {...props} />
         </Main>
-        <OverviewSidebar className="col col-4" />
-        <PageFooter />
       </>
     );
   }

@@ -11,9 +11,8 @@ function getCartTotal(cart) {
   }, 0);
 }
 
-function Cart({ handleRemove, handleChange, ...props }) {
+function Cart({ ...props }) {
   const { cartItems } = useContext(CartItemStateContext);
-  console.log(cartItems);
   return (
     <aside {...props}>
       <div className="row flex-column">
@@ -32,8 +31,6 @@ function Cart({ handleRemove, handleChange, ...props }) {
               img={item.img}
               quantity={item.quantity}
               unitsInStock={item.unitsInStock}
-              handleRemove={handleRemove}
-              handleChange={handleChange}
             />
           ))
         ) : (
@@ -53,7 +50,7 @@ function Cart({ handleRemove, handleChange, ...props }) {
               <hr />
             </div>
             <div className="col">
-              <Link to="/checkout">
+              <Link to="/checkout/step-1">
                 <Button disabled={cartItems.length < 1}>Checkout</Button>
               </Link>
             </div>

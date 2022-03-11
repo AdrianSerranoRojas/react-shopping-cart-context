@@ -9,10 +9,9 @@ function getCartTotal(cart) {
   }, 0);
 }
 
-function OverviewSidebar({ handleChange, ...props }) {
-  const { cartItems, handleRemove } = useContext(CartItemStateContext);
-  // const dispatch = useContext(CartItemDispatchContext);
-  console.log(cartItems);
+function OverviewSidebar({ handleRemove, handleChange, ...props }) {
+  const { cartItems } = useContext(CartItemStateContext);
+
   return (
     <aside {...props}>
       <div className="row flex-column">

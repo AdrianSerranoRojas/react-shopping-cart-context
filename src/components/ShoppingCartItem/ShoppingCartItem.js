@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import "./ShoppingCartItem.scss";
 
 import Button from "../Button";
+import { CartItemDispatchContext } from "../../context/CartItemContext";
 
 function buildSelectOptions(unitsInStock) {
   return Array.from({ length: unitsInStock }, (_value, index) => {
@@ -15,16 +16,10 @@ function buildSelectOptions(unitsInStock) {
   });
 }
 
-function ShoppingCartItem({
-  id,
-  img,
-  title,
-  price,
-  quantity,
-  unitsInStock,
-  handleChange,
-  handleRemove,
-}) {
+function ShoppingCartItem({ id, img, title, price, quantity, unitsInStock }) {
+
+  const { handleChange, handleRemove } = useContext(CartItemDispatchContext);
+  
   function onHandleChange(event) {
     handleChange(event, id);
   }

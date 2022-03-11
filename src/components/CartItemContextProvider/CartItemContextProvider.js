@@ -1,9 +1,10 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
 
 import {
   CartItemStateContext,
   CartItemDispatchContext,
 } from "../../context/CartItemContext";
+import { ProductsContext } from "../../context/ProductsContext";
 
 import loadLocalStorageItems from "../../utils/loadLocalStorageItems";
 
@@ -14,6 +15,23 @@ export const cartItemInitialState = {
 };
 
 export function cartItemReducer(state, action) {
+  function buildNewCartItem(cartItem) {
+    if (cartItem.quantity >= cartItem.unitsInStock) {
+      return cartItem;
+    }
+
+    return {
+      id: cartItem.id,
+      title: cartItem.title,
+      img: cartItem.img,
+      price: cartItem.price,
+      unitsInStock: cartItem.unitsInStock,
+      createdAt: cartItem.createdAt,
+      updatedAt: cartItem.updatedAt,
+      quantity: cartItem.quantity + 1,
+    };
+  }
+
   switch (action.type) {
     case "handleRemove": {
       const updatedCart = state.cartItems.filter(
@@ -24,6 +42,24 @@ export function cartItemReducer(state, action) {
         cartItems: updatedCart,
       };
     }
+    case "handleChange": {
+      const { cartItems } = state;
+      const { event, productId } = action.payload;
+      const updatedCartItems = cartItems.map((item) => {
+        if (item.id === productId && item.quantity <= item.unitsInStock) {
+          return {
+            ...item,
+            quantity: Number(event.target.value),
+          };
+        }
+        return item;
+      });
+      return {
+        ...state,
+        cartItems: updatedCartItems,
+      };
+    }
+
     case "handleAddToCart": {
       const { cartItems } = state;
       const { products, productId } = action.payload;
@@ -48,16 +84,7 @@ export function cartItemReducer(state, action) {
           cartItems: updatedCartItems,
         };
       }
-      const updatedProduct = {
-        id: foundProduct.id,
-        title: foundProduct.title,
-        img: foundProduct.img,
-        price: foundProduct.price,
-        unitsInStock: foundProduct.unitsInStock,
-        createdAt: foundProduct.createdAt,
-        updatedAt: foundProduct.updatedAt,
-        quantity: foundProduct.quantity + 1,
-      };
+      const updatedProduct = buildNewCartItem(foundProduct);
       return {
         ...state,
         cartItems: [...cartItems, updatedProduct],
@@ -73,10 +100,43 @@ function CartItemContextProvider({ children }) {
     cartItemReducer,
     cartItemInitialState,
   );
+  const { products } = useContext(ProductsContext);
+
+  function handleChange(event, productId) {
+    dispatch({
+      type: "handleChange",
+      payload: {
+        productId: productId,
+        products: products,
+        event: event,
+      },
+    });
+  }
+
+  function handleAddToCart(productId) {
+    dispatch({
+      type: "handleAddToCart",
+      payload: {
+        productId: productId,
+        products: products,
+      },
+    });
+  }
+
+  function handleRemove(productId) {
+    dispatch({
+      type: "handleRemove",
+      payload: {
+        productId: productId,
+      },
+    });
+  }
 
   return (
     <CartItemStateContext.Provider value={cartItem}>
-      <CartItemDispatchContext.Provider value={dispatch}>
+      <CartItemDispatchContext.Provider
+        value={{ dispatch, handleChange, handleAddToCart, handleRemove }}
+      >
         {children}
       </CartItemDispatchContext.Provider>
     </CartItemStateContext.Provider>
