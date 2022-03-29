@@ -7,10 +7,21 @@ function PageHeader({ ...props }) {
     <header className="bg-primary mb-4" {...props}>
       <div className="container-fluid">
         <div className="row">
-          <nav className="navbar navbar-expand navbar-dark">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">HOla</li>
-            </ul>
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb">
+              <li className="breadcrumb-item">
+                <a href="/checkout/step-1">Personal Details</a>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Billing Address
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Payment Method
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">
+                Ovierview
+              </li>
+            </ol>
           </nav>
         </div>
       </div>
@@ -19,3 +30,5 @@ function PageHeader({ ...props }) {
 }
 
 export default PageHeader;
+
+// style = "--bs-breadcrumb-divider: '>';";

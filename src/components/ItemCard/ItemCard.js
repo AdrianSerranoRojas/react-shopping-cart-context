@@ -42,7 +42,6 @@ function ItemCard({
   const { handleDownVote, handleUpVote, handleSetFavorite } = useContext(
     ProductsContext,
   );
-  console.log(handleUpVote);
 
   function onDownVote() {
     handleDownVote(id);

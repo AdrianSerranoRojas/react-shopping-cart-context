@@ -1,26 +1,48 @@
 import React, { useReducer } from "react";
 
-import CheckoutsContext from "../../context/CheckoutsContext";
+import { CheckoutsContext } from "../../context/CheckoutsContext";
 
 import loadLocalStorageItems from "../../utils/loadLocalStorageItems";
 
 const CHECKOUTS_LOCAL_STORAGE_KEY = "react-sc-state-checkouts";
 
-export const CheckoutsInitialState = {
-  checkouts: loadLocalStorageItems(CHECKOUTS_LOCAL_STORAGE_KEY, []),
-  saveCheckoutTemp: () => {},
-};
+export const CheckoutsInitialState = loadLocalStorageItems(
+  CHECKOUTS_LOCAL_STORAGE_KEY,
+  {
+    step1: {},
+    step2: {},
+    step3: {},
+  },
+);
 
 export function checkoutReducer(state, action) {
   switch (action.type) {
-    case "handleAddToCheckouts":
-      console.log("hola");
+    case "handleAddToCheckouts1": {
+      const { newCheckout } = action.payload;
       return {
-        ...state,
-        checkouts: [action.payload.newCheckout],
+        step1: { ...newCheckout },
+        step2: state.step2,
+        step3: state.step3,
       };
+    }
+    case "handleAddToCheckouts2": {
+      const { addCheckout } = action.payload;
+      return {
+        step1: state.step1,
+        step2: { ...addCheckout },
+        step3: state.step3,
+      };
+    }
+    case "handleAddToCheckouts3": {
+      const { addCheckout } = action.payload;
+      return {
+        step1: state.step1,
+        step2: state.step2,
+        step3: { ...addCheckout },
+      };
+    }
     default:
-      return {};
+      return state;
   }
 }
 
@@ -30,12 +52,27 @@ function CheckoutsContextProvider({ children }) {
     CheckoutsInitialState,
   );
 
-  function saveCheckoutTemp(newCheckout) {
-    console.log("hola");
+  function saveCheckoutTemp1(newCheckout) {
     dispatch({
-      type: "handleAddToCheckouts",
+      type: "handleAddToCheckouts1",
       payload: {
-        newCheckout: newCheckout,
+        newCheckout,
+      },
+    });
+  }
+  function saveCheckoutTemp2(addCheckout) {
+    dispatch({
+      type: "handleAddToCheckouts2",
+      payload: {
+        addCheckout,
+      },
+    });
+  }
+  function saveCheckoutTemp3(addCheckout) {
+    dispatch({
+      type: "handleAddToCheckouts3",
+      payload: {
+        addCheckout,
       },
     });
   }
@@ -44,7 +81,10 @@ function CheckoutsContextProvider({ children }) {
     <CheckoutsContext.Provider
       value={{
         checkouts,
-        saveCheckoutTemp,
+        dispatch,
+        saveCheckoutTemp1,
+        saveCheckoutTemp2,
+        saveCheckoutTemp3,
       }}
     >
       {children}

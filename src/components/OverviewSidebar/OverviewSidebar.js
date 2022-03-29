@@ -9,7 +9,7 @@ function getCartTotal(cart) {
   }, 0);
 }
 
-function OverviewSidebar({ handleRemove, handleChange, ...props }) {
+function OverviewSidebar({ ...props }) {
   const { cartItems } = useContext(CartItemStateContext);
 
   return (
@@ -30,8 +30,6 @@ function OverviewSidebar({ handleRemove, handleChange, ...props }) {
               img={item.img}
               quantity={item.quantity}
               unitsInStock={item.unitsInStock}
-              handleRemove={handleRemove}
-              handleChange={handleChange}
             />
           ))
         ) : (

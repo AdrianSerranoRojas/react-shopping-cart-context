@@ -27,8 +27,8 @@ function Input({
         id={id}
         name={id}
         type={type}
-        placeholder={placeholder}
         value={value}
+        placeholder={placeholder}
         onChange={handleChange}
         onBlur={handleBlur}
         {...props}

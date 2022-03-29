@@ -8,7 +8,7 @@ import Button from "../Button";
 
 import checkoutSchema2 from "./checkout-schema-2";
 
-import CheckoutsContext from "../../context/CheckoutsContext";
+import { CheckoutsContext } from "../../context/CheckoutsContext";
 
 function BillingAddressForm(checkout) {
   return {
@@ -19,18 +19,19 @@ function BillingAddressForm(checkout) {
 
 function PersonalDetailsForm() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const { saveCheckoutTemp } = useContext(CheckoutsContext);
+  const { checkouts, saveCheckoutTemp2 } = useContext(CheckoutsContext);
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
-      phone: "",
+      address: checkouts.step2.address ? checkouts.step2.address : "",
+      city: checkouts.step2.city ? checkouts.step2.city : "",
+      zipCode: checkouts.step2.zipCode ? checkouts.step2.zipCode : "",
+      country: checkouts.step2.country ? checkouts.step2.country : "",
     },
     validationSchema: checkoutSchema2,
     onSubmit: (values, { setSubmitting }) => {
       const newCheckout = BillingAddressForm(values);
-      saveCheckoutTemp(newCheckout);
+      saveCheckoutTemp2(newCheckout);
       setSubmitting(true);
       setTimeout(() => {
         setHasSubmitted(true);

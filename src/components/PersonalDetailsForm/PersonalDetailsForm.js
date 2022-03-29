@@ -8,7 +8,7 @@ import Button from "../Button";
 
 import checkoutSchema from "./checkout-schema";
 
-import CheckoutsContext from "../../context/CheckoutsContext";
+import { CheckoutsContext } from "../../context/CheckoutsContext";
 
 function AddCheckoutDetails(checkout) {
   return {
@@ -19,18 +19,18 @@ function AddCheckoutDetails(checkout) {
 
 function PersonalDetailsForm() {
   const [hasSubmitted, setHasSubmitted] = useState(false);
-  const { checkouts, saveCheckoutTemp } = useContext(CheckoutsContext);
+  const { checkouts, saveCheckoutTemp1 } = useContext(CheckoutsContext);
 
   const formik = useFormik({
     initialValues: {
-      name: "",
-      email: "",
-      phone: "",
+      name: checkouts.step1.name ? checkouts.step1.name : "",
+      email: checkouts.step1.email ? checkouts.step1.email : "",
+      phone: checkouts.step1.phone ? checkouts.step1.phone : "",
     },
     validationSchema: checkoutSchema,
     onSubmit: (values, { setSubmitting }) => {
       const newCheckout = AddCheckoutDetails(values);
-      saveCheckoutTemp(newCheckout);
+      saveCheckoutTemp1(newCheckout);
       setSubmitting(true);
       setTimeout(() => {
         setHasSubmitted(true);
@@ -38,12 +38,10 @@ function PersonalDetailsForm() {
     },
   });
 
-  console.log(checkouts);
-
   return (
     <>
       <div className="col col-7">
-        <form onSubmit={formik.handleSubmit}>
+        <form id="form1" onSubmit={formik.handleSubmit}>
           <Input
             type="text"
             label="name"

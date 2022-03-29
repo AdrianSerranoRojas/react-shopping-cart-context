@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 import Home from "./pages/Home";
 import NewProduct from "./pages/NewProduct";
@@ -7,25 +8,26 @@ import CheckoutPage from "./pages/CheckoutPage/CheckoutPage";
 
 import * as api from "./api";
 
-import useLocalStorage from "./hooks/useLocalStorage";
-
 import { CartItemStateContext } from "./context/CartItemContext";
 import { ProductsContext } from "./context/ProductsContext";
+import { CheckoutsContext } from "./context/CheckoutsContext";
+
 import PersonalDetailsForm from "./components/PersonalDetailsForm";
 import BillingAddressForm from "./components/BillingAddressForm";
 import PaymentDetailsForm from "./components/PaymentDetailsForm";
 
 const PRODUCTS_LOCAL_STORAGE_KEY = "react-sc-state-products";
 const CART_ITEMS_LOCAL_STORAGE_KEY = "react-sc-state-cart-items";
-// const CHECKOUTS_LOCAL_STORAGE_KEY = "react-sc-state-checkouts";
+const CHECKOUTS_LOCAL_STORAGE_KEY = "react-sc-state-checkouts";
 
 function App() {
   const { products, setProducts } = useContext(ProductsContext);
   const { cartItems } = useContext(CartItemStateContext);
+  const { checkouts } = useContext(CheckoutsContext);
 
   useLocalStorage(products, PRODUCTS_LOCAL_STORAGE_KEY);
   useLocalStorage(cartItems, CART_ITEMS_LOCAL_STORAGE_KEY);
-  // useLocalStorage(checkouts, CHECKOUTS_LOCAL_STORAGE_KEY);
+  useLocalStorage(checkouts, CHECKOUTS_LOCAL_STORAGE_KEY);
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
